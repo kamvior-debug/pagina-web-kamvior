@@ -1,0 +1,69 @@
+name: Desplegar sitio en GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener el código
+        uses: actions/checkout@v7
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Configurar GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar
+        env:
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH }}
+        run: |
+          if [ -n "${VITE_BASE_PATH}" ]; then
+            export VITE_BASE_PATH
+          elif [ -n "${PAGES_BASE_PATH}" ]; then
+            export VITE_BASE_PATH="${PAGES_BASE_PATH}"
+          else
+            export VITE_BASE_PATH="/"
+          fi
+          echo "VITE_BASE_PATH=${VITE_BASE_PATH}"
+          npm run build
+
+      - name: Subir el artefacto dist
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      actions: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

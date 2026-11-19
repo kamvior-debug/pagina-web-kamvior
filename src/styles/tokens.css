@@ -1,0 +1,20 @@
+:root {
+  --navy: #0b1f44;
+  --navy-700: #16325f;
+  --ink: #0b1f44;
+  --muted: #3e4c66;
+  --teal: #00a88f;
+  --teal-text: #067a68;
+  --line: #e3e8ef;
+  --line-strong: #cdd5e1;
+  --surface: #f5f7fa;
+  --mint: #e7f6f2;
+  --white: #ffffff;
+  --danger: #9b2c2c;
+  --on-navy: #d5e0ea;
+  --header-h: 5.25rem;
+  --font: "Manrope", "Segoe UI", sans-serif;
+  --shadow: 0 18px 40px rgba(11, 31, 68, 0.08);
+  --radius: 16px;
+  color-scheme: light;
+}
