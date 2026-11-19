@@ -91,34 +91,24 @@ No hay servidor. El formulario pide el nombre y qué necesita el negocio. Al env
 
 ## Publicar en GitHub
 
-El repositorio es [kamvior-debug/pagina-web-kamvior](https://github.com/kamvior-debug/pagina-web-kamvior). El CNAME de `www` debe apuntar a `kamvior-debug.github.io`, porque esa es la cuenta dueña del repositorio.
+Hay dos direcciones distintas. Abrir la segunda antes de activar Pages muestra un 404: "There isn't a GitHub Pages site here."
 
-Dominio: `kamvior.com`
+| Qué es | Dirección |
+| --- | --- |
+| El repositorio, donde está el código y este README | https://github.com/kamvior-debug/pagina-web-kamvior |
+| La página publicada, cuando Pages ya está activo | https://kamvior-debug.github.io/pagina-web-kamvior/ |
 
-La verificación del dominio en GitHub no publica el sitio. Solo demuestra que la cuenta puede usarlo.
+El código ya está en la rama `main`. El dominio `kamvior.com` y el DNS se configuran después. Hasta entonces, no hace falta tocar Hostinger.
 
-1. Sube el proyecto a GitHub.
-   - El repositorio ya está creado: `kamvior-debug/pagina-web-kamvior`.
-   - La rama principal debe llamarse `main`, porque el workflow escucha esa rama.
-   - No subas `node_modules` ni `dist`. El `.gitignore` ya los excluye.
+Para que la página publicada deje de dar 404, entra con la cuenta `kamvior-debug`:
 
-2. Activa GitHub Actions.
-   - El archivo `.github/workflows/deploy.yml` entra con el código.
-   - En el repositorio, abre la pestaña Actions y permite los workflows si GitHub lo pide.
+1. Abre la configuración de Pages: https://github.com/kamvior-debug/pagina-web-kamvior/settings/pages
+2. En **Build and deployment**, **Source**, elige **GitHub Actions**.
+3. El repositorio tiene que estar en **Public**. En un plan gratuito, un repositorio privado no publica Pages. La visibilidad se cambia en https://github.com/kamvior-debug/pagina-web-kamvior/settings. El sitio no guarda contraseñas ni datos de clientes.
+4. Abre https://github.com/kamvior-debug/pagina-web-kamvior/actions y permite el workflow si GitHub lo pide. El workflow se llama "Desplegar sitio en GitHub Pages". Si el primer intento falla porque Pages aún no estaba activo, pulsa **Run workflow**.
+5. Cuando el workflow termine en verde, abre https://kamvior-debug.github.io/pagina-web-kamvior/ y confirma el logotipo, los estilos y los enlaces de WhatsApp.
 
-3. Configura Settings > Pages.
-   - Entra a Settings > Pages.
-   - En Build and deployment, Source, elige GitHub Actions.
-
-4. La fuente de publicación es GitHub Actions, no una rama.
-   - El workflow usa las acciones oficiales `checkout`, `setup-node`, `configure-pages`, `upload-pages-artifact` y `deploy-pages`.
-   - Compila el proyecto y publica el contenido de `dist`.
-
-5. Revisa el despliegue.
-   - En Actions, abre el workflow "Desplegar sitio en GitHub Pages".
-   - Si el primer intento falla porque Pages aún no estaba configurado, vuelve a ejecutarlo con Run workflow.
-   - Al terminar, la URL de prueba debería ser `https://kamvior-debug.github.io/pagina-web-kamvior/`.
-   - Confirma que el logotipo, los estilos y los enlaces de WhatsApp cargan.
+El archivo `.github/workflows/deploy.yml` ya está en el repositorio. Compila el proyecto y publica `dist`. No subas `node_modules` ni `dist`: el `.gitignore` los excluye. El CNAME de `www`, cuando llegue el dominio, debe apuntar a `kamvior-debug.github.io`.
 
 6. Asocia el dominio personalizado.
    - En Settings > Pages, Custom domain, escribe `kamvior.com` y guarda.
